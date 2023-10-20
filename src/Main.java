@@ -4,6 +4,8 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.io.File;
+import javax.sound.sampled.*;
 
 public class Main {
 
@@ -85,5 +87,18 @@ public class Main {
             System.out.println("Файл скачан!!!!!!!!!!!!!!!!");
         }
         httpURLConnection.disconnect();
+        try {
+            String musicFile = file;
+
+            File file_s = new File(musicFile);
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(file_s);
+            AudioFormat format = audioStream.getFormat();
+            DataLine.Info info = new DataLine.Info(Clip.class, format);
+            Clip clip = (Clip) AudioSystem.getLine(info);
+            clip.open(audioStream);
+            clip.start();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }
